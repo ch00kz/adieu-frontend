@@ -26,7 +26,7 @@ function Form({ onSubmit }: FormProps) {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Username:
+        Enter your name:
         <input
           type="text"
           name="username"
@@ -35,7 +35,7 @@ function Form({ onSubmit }: FormProps) {
         />
       </label>
       <br />
-      <button disabled={!formData.username} type="submit">
+      <button className="button" disabled={!formData.username} type="submit">
         Join Game
       </button>
     </form>

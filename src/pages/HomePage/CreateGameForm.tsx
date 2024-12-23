@@ -1,5 +1,5 @@
 import React from "react";
-import { GameKind } from "../../api/CreateGame";
+import { GameKind } from "../../api/Game";
 
 interface FormProps {
   onSubmit: (data: FormData) => void;
@@ -54,7 +54,10 @@ function Form({ onSubmit }: FormProps) {
         </label>
       )}
       <br />
-      <button type="submit">{`Create Game with ${formData.kind} Word`}</button>
+      <button
+        className="button"
+        type="submit"
+      >{`Create Game with ${formData.kind} Word`}</button>
     </form>
   );
 }

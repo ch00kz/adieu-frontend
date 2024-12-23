@@ -16,20 +16,25 @@ function Form({ onSubmit, onChange, inputRef, wordLength }: FormProps) {
     guess: "",
   });
 
+  const updateGuess = (newFormData: FormData) => {
+    setFormData(newFormData);
+    onChange(newFormData);
+  };
+
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     const newFormData = { ...formData, [name]: value };
-    setFormData(newFormData);
-    onChange(newFormData);
+    updateGuess(newFormData);
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     onSubmit(formData);
-    setFormData({ guess: "" });
-    onChange({ guess: "" });
+    updateGuess({ guess: "" });
+
+    // refocus the hidden field
     if (inputRef.current) {
-      inputRef.current.focus(); // Force focus on the input
+      inputRef.current.focus();
     }
   }
 
@@ -48,7 +53,11 @@ function Form({ onSubmit, onChange, inputRef, wordLength }: FormProps) {
         />
       </label>
       <br />
-      <button type="submit" disabled={!formData.guess}>
+      <button
+        className="button"
+        type="submit"
+        disabled={formData.guess.length != wordLength}
+      >
         Guess
       </button>
     </form>

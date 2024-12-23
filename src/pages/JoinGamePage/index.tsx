@@ -1,5 +1,5 @@
 import { useParams } from "react-router";
-import { joinGame } from "../../api/JoinGame";
+import { joinGame } from "../../api/Game";
 import MainLayout from "../../components/MainLayout";
 import JoinGameForm from "./JoinGameForm";
 import { useNavigate } from "react-router";
@@ -40,7 +40,7 @@ function JoinGamePage() {
         }}
       />
       <button
-        className="secondary copyUrl"
+        className="button secondary copyUrl"
         onClick={async () => {
           await navigator.clipboard.writeText(
             `http://localhost:5173/join/${game}`,

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import CreateGameForm from "./CreateGameForm";
-import { createGame, GameKind } from "../../api/CreateGame";
+import { createGame, GameKind } from "../../api/Game";
 import MainLayout from "../../components/MainLayout";
 
 function HomePage() {

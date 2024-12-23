@@ -1,9 +1,39 @@
-html,
 body {
+    height: 100vh;
     font-family: "IBM Plex Serif";
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.5;
+    --pico-primary-background: #000000;
+    --pico-primary-hover-background: #ffffff;
+
+    --pico-secondary-inverse: #000000;
+    --pico-secondary-background: #ffffff;
+    --pico-secondary-hover-background: #ffffff;
+}
+
+.button {
+    text-transform: uppercase;
+    font-size: 19px;
+    font-family: "IBM Plex Sans";
+    letter-spacing: 1px;
+    font-weight: 500;
+    border: 2px solid transparent;
+    border-radius: 0px;
+}
+
+.button:hover {
+    color: black;
+    border: 2px dashed black;
+}
+
+.button:disabled {
+    opacity: 0.05;
+}
+
+.button.secondary {
+    border: 2px solid black;
+}
+
+.button.secondary:hover {
+    border: 2px dashed black;
 }
 
 .container {
@@ -11,7 +41,10 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5;
+    font-display: optional;
 }
 
 .page-hero {
@@ -24,6 +57,15 @@ body {
 }
 
 form {
+    width: 400px;
+}
+
+form.input,
+form.select {
+    border-radius: 0px;
+}
+
+.copyUrl {
     width: 400px;
 }
 
@@ -78,8 +120,4 @@ form {
     position: absolute !important;
     top: -9999px !important;
     left: -9999px !important;
-}
-
-.copyUrl {
-    width: 400px;
 }

@@ -2,22 +2,11 @@ import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
 import CreateGuessForm from "./CreateGuessForm";
-import { createGuess, Letter, Status } from "../../api/CreateGuess";
+import { createGuess, getGuesses, Letter, Status } from "../../api/Guess";
 import { useEffect, useRef, useState } from "react";
+import { Guess, LetterBlock } from "../../components/Guess";
 
-const LetterBlock = ({ letter }: { letter: Letter }) => (
-  <div className={`letter ${letter.status.toLowerCase()}`}>{letter.letter}</div>
-);
-
-const Guess = ({ guess }: { guess: Letter[] }) => (
-  <div className="letters">
-    {guess.map((letter, i) => (
-      <LetterBlock key={i} letter={letter} />
-    ))}
-  </div>
-);
-
-function JoinGamePage() {
+function GamePage() {
   const { game } = useParams();
   const existingPlayer = game ? localStorage.getItem(game) : null;
   const wordLength = game
@@ -25,6 +14,7 @@ function JoinGamePage() {
     : null;
 
   const navigateTo = useNavigate();
+  const [hasWon, setHasWon] = useState<boolean>(false);
   const [guesses, setGuesses] = useState<Letter[][]>([]);
   const [currentGuess, setCurrentGuess] = useState<Letter[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,12 +29,30 @@ function JoinGamePage() {
     }
   });
 
+  useEffect(() => {
+    async function fetchPlayerGuesses() {
+      const response = await getGuesses(existingPlayer!);
+      if (response.guesses.some((guess) => guess.is_winning_guess)) {
+        navigateTo(`/victory/${game}`);
+      } else {
+        setGuesses(response.guesses.map((guess) => guess.letters));
+      }
+    }
+    fetchPlayerGuesses();
+  }, [existingPlayer, game, navigateTo]);
+
+  useEffect(() => {
+    if (hasWon) {
+      navigateTo(`/victory/${game}`);
+    }
+  }, [hasWon, navigateTo, game]);
+
   // this shouldn't happen but typescript thinks they can be null
   if (!(game && existingPlayer && wordLength)) {
     return null;
   }
 
-  const numMissingLetters = wordLength - currentGuess.length;
+  const numMissingLetters = hasWon ? 0 : wordLength - currentGuess.length;
 
   const blankGuesses: Letter[] = Array.from(
     Array(numMissingLetters).keys(),
@@ -70,10 +78,11 @@ function JoinGamePage() {
           inputRef={inputRef}
           wordLength={wordLength}
           onSubmit={async (formData) => {
-            const { letters } = await createGuess(existingPlayer!, {
+            const { guess } = await createGuess(existingPlayer!, {
               guess: formData.guess,
             });
-            setGuesses([...guesses, letters]);
+            setGuesses([...guesses, guess.letters]);
+            setHasWon(guess.is_winning_guess);
           }}
           onChange={(formData) => {
             setCurrentGuess(
@@ -89,4 +98,4 @@ function JoinGamePage() {
   );
 }
 
-export default JoinGamePage;
+export default GamePage;

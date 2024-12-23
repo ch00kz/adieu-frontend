@@ -9,7 +9,8 @@ export enum Status {
   Unsubmitted = "Unsubmitted",
 }
 export type Letter = { letter: string; status: Status };
-export type CreateGuessResponse = { letters: Letter[] };
+export type PlayerGuess = { letters: Letter[]; is_winning_guess: boolean };
+export type CreateGuessResponse = { guess: PlayerGuess };
 
 export async function createGuess(
   player: string,
@@ -20,6 +21,19 @@ export async function createGuess(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
   });
+  const response = await fetch(request);
+  return response.json();
+}
+
+export type GetGuessesReponses = { guesses: PlayerGuess[] };
+
+export async function getGuesses(player: string): Promise<GetGuessesReponses> {
+  const request = new Request(
+    `http://localhost:3000/player/${player}/guesses`,
+    {
+      method: "GET",
+    },
+  );
   const response = await fetch(request);
   return response.json();
 }
