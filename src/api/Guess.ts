@@ -37,3 +37,24 @@ export async function getGuesses(player: string): Promise<GetGuessesReponses> {
   const response = await fetch(request);
   return response.json();
 }
+
+export type GameGuess = {
+  player: string;
+  username: string;
+  guesses: number;
+  has_won: boolean;
+};
+
+export type GetGameGuessesResponse = {
+  guesses: GameGuess[];
+};
+
+export async function getGameGuesses(
+  game: string,
+): Promise<GetGameGuessesResponse> {
+  const request = new Request(`http://localhost:3000/game/${game}/guesses`, {
+    method: "GET",
+  });
+  const response = await fetch(request);
+  return response.json();
+}

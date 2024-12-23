@@ -1,12 +1,12 @@
 import { ReactNode } from "react";
 import "./styles.css";
 
-type TProps = { children: ReactNode };
+type TProps = { children: ReactNode; pageTitle?: string };
 
-function MainLayout({ children }: TProps) {
+function MainLayout({ children, pageTitle }: TProps) {
   return (
     <div className="container">
-      <h1 className="page-hero">ADIEU</h1>
+      <h1 className="page-hero">{pageTitle ? pageTitle : "ADIEU"}</h1>
       <section>{children}</section>
     </div>
   );

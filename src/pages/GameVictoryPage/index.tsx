@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { getGuesses, Letter } from "../../api/Guess";
+import { GameGuess, getGameGuesses, getGuesses, Letter } from "../../api/Guess";
 import { Guess } from "../../components/Guess";
 
 function GameVictoryPage() {
@@ -13,7 +13,8 @@ function GameVictoryPage() {
     : null;
 
   const navigateTo = useNavigate();
-  const [guesses, setGuesses] = useState<Letter[][]>([]);
+  const [playerGuesses, setPlayerGuesses] = useState<Letter[][]>([]);
+  const [gameGuesses, setGameGuesses] = useState<GameGuess[]>([]);
 
   useEffect(() => {
     if (!game) {
@@ -28,19 +29,71 @@ function GameVictoryPage() {
   useEffect(() => {
     async function fetchPlayerGuesses() {
       const response = await getGuesses(existingPlayer!);
-      setGuesses(response.guesses.map((guess) => guess.letters));
+      setPlayerGuesses(response.guesses.map((guess) => guess.letters));
     }
+
+    async function fetchGameGuesses() {
+      const response = await getGameGuesses(game!);
+      setGameGuesses(response.guesses);
+    }
+
     fetchPlayerGuesses();
+    fetchGameGuesses();
   }, [existingPlayer]);
+
+  const positionEmoji = (num: number): string => {
+    switch (num) {
+      case 0:
+        return "🥇";
+      case 1:
+        return "🥈";
+      case 2:
+        return "🥉";
+      default:
+        return "";
+    }
+  };
 
   // this shouldn't happen but typescript thinks they can be null
   return (
-    <MainLayout>
+    <MainLayout pageTitle={"🎉 ADIEU 🎉"}>
       <div>
         <div className="guesses">
-          {guesses.map((guess, i) => (
+          {playerGuesses.map((guess, i) => (
             <Guess key={i} guess={guess} />
           ))}
+        </div>
+
+        <div className="leaderboard">
+          <table>
+            <thead>
+              <th></th>
+              <th></th>
+              <th>Username</th>
+              <th>Guesses</th>
+              <th>Victory</th>
+              <th></th>
+            </thead>
+            <tbody>
+              {gameGuesses.map((guess, position) => {
+                const isYou = guess.player == existingPlayer;
+                return (
+                  <tr>
+                    <td className={isYou ? "you" : ""}>{isYou ? "👉" : ""}</td>
+                    <td className={isYou ? "you" : ""}>
+                      {guess.has_won && positionEmoji(position)}
+                    </td>
+                    <td className={isYou ? "you" : ""}>{guess.username}</td>
+                    <td className={isYou ? "you" : ""}>{guess.guesses}</td>
+                    <td className={isYou ? "you" : ""}>
+                      {guess.has_won ? "🏆" : ""}
+                    </td>
+                    <td className={isYou ? "you" : ""}>{isYou ? "👈" : ""}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </MainLayout>
