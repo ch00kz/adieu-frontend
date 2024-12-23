@@ -14,7 +14,7 @@ export type CreateGameResponse = { game: string };
 export async function createGame(
   params: CreateGameParams,
 ): Promise<CreateGameResponse> {
-  const request = new Request("http://localhost:3000/create-game", {
+  const request = new Request("http://localhost:3000/game/create", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),

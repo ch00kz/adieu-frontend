@@ -10,8 +10,8 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/join/:gameId" element={<JoinGamePage />} />
-        <Route path="/game/:gameId" element={<GamePage />} />
+        <Route path="/join/:game" element={<JoinGamePage />} />
+        <Route path="/play/:game" element={<GamePage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

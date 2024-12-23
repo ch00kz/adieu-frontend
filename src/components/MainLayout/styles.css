@@ -1,5 +1,6 @@
-:root {
-    font-family: "IBM Plex Sans", serif;
+html,
+body {
+    font-family: "IBM Plex Serif";
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -10,12 +11,75 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 100%;
 }
 
 .page-hero {
-    margin-top: 100px;
+    margin: 50px;
+    font-weight: 500;
+    font-size: 50px;
+    font-family: "IBM Plex Serif";
+    font-display: block;
+    letter-spacing: 10px;
 }
 
 form {
+    width: 400px;
+}
+
+.guesses {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.letters {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    text-transform: uppercase;
+    font-family: "IBM Plex Sans";
+}
+
+.letter {
+    height: 90px;
+    width: 90px;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
+
+.correct {
+    background-color: #58c03e;
+}
+
+.intheword {
+    background-color: #ecaf53;
+}
+
+.wrong {
+    background-color: #b5b5b5;
+}
+
+.unsubmitted {
+    color: black;
+    border-color: #3c3c3c;
+    background-color: white;
+}
+
+.guessForm {
+    position: absolute !important;
+    top: -9999px !important;
+    left: -9999px !important;
+}
+
+.copyUrl {
     width: 400px;
 }
