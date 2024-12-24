@@ -68,9 +68,6 @@ function GamePage() {
 
       <div onClick={() => inputRef.current?.focus()}>
         <div className="guesses">
-          {guesses.map((guess, i) => (
-            <Guess key={i} guess={guess} />
-          ))}
           <div className="letters">
             {currentGuess.map((letter, i) => (
               <LetterBlock key={i} letter={letter} />
@@ -79,6 +76,9 @@ function GamePage() {
               <LetterBlock key={i} letter={letter} />
             ))}
           </div>
+          {guesses.map((guess, i) => (
+            <Guess key={i} guess={guess} />
+          ))}
         </div>
 
         <Leaderboard
@@ -94,7 +94,7 @@ function GamePage() {
             const { guess } = await createGuess(existingPlayer!, {
               guess: formData.guess,
             });
-            setGuesses([...guesses, guess.letters]);
+            setGuesses([guess.letters, ...guesses]);
             setHasWon(guess.is_winning_guess);
             setRefreshTrigger(refreshTrigger + 1);
           }}
