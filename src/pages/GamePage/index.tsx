@@ -5,6 +5,7 @@ import CreateGuessForm from "./CreateGuessForm";
 import { createGuess, getGuesses, Letter, Status } from "../../api/Guess";
 import { useEffect, useRef, useState } from "react";
 import { Guess, LetterBlock } from "../../components/Guess";
+import Leaderboard from "../../components/Leaderboard";
 
 function GamePage() {
   const { game } = useParams();
@@ -17,6 +18,7 @@ function GamePage() {
   const [hasWon, setHasWon] = useState<boolean>(false);
   const [guesses, setGuesses] = useState<Letter[][]>([]);
   const [currentGuess, setCurrentGuess] = useState<Letter[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -60,6 +62,10 @@ function GamePage() {
 
   return (
     <MainLayout>
+      <p className="callout">
+        Try to guess the word. Hit ENTER or RETURN or submit your guess.
+      </p>
+
       <div onClick={() => inputRef.current?.focus()}>
         <div className="guesses">
           {guesses.map((guess, i) => (
@@ -74,6 +80,13 @@ function GamePage() {
             ))}
           </div>
         </div>
+
+        <Leaderboard
+          game={game!}
+          currentPlayer={existingPlayer!}
+          refreshTrigger={refreshTrigger}
+        />
+
         <CreateGuessForm
           inputRef={inputRef}
           wordLength={wordLength}
@@ -83,6 +96,7 @@ function GamePage() {
             });
             setGuesses([...guesses, guess.letters]);
             setHasWon(guess.is_winning_guess);
+            setRefreshTrigger(refreshTrigger + 1);
           }}
           onChange={(formData) => {
             setCurrentGuess(

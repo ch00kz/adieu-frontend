@@ -29,7 +29,11 @@ function JoinGamePage() {
 
   return (
     <MainLayout>
+      <p className="callout">
+        You've been invited to a game of <em>ADIEU</em>.
+      </p>
       <JoinGameForm
+        game={game}
         onSubmit={async (formData) => {
           const { player, length } = await joinGame(game, {
             username: formData.username,
@@ -39,16 +43,6 @@ function JoinGamePage() {
           return navigateTo(`/play/${game}`);
         }}
       />
-      <button
-        className="button secondary copyUrl"
-        onClick={async () => {
-          await navigator.clipboard.writeText(
-            `http://localhost:5173/join/${game}`,
-          );
-        }}
-      >
-        Copy URL
-      </button>
     </MainLayout>
   );
 }

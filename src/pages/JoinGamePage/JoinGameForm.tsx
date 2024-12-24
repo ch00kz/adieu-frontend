@@ -2,13 +2,14 @@ import React from "react";
 
 interface FormProps {
   onSubmit: (data: FormData) => void;
+  game: string;
 }
 
 interface FormData {
   username: string;
 }
 
-function Form({ onSubmit }: FormProps) {
+function Form({ onSubmit, game }: FormProps) {
   const [formData, setFormData] = React.useState<FormData>({
     username: "",
   });
@@ -26,7 +27,7 @@ function Form({ onSubmit }: FormProps) {
   return (
     <form onSubmit={handleSubmit}>
       <label>
-        Enter your name:
+        Enter a name for the leaderboard
         <input
           type="text"
           name="username"
@@ -38,6 +39,17 @@ function Form({ onSubmit }: FormProps) {
       <button className="button" disabled={!formData.username} type="submit">
         Join Game
       </button>
+      <a
+        role="button"
+        className="button secondary copyUrl"
+        onClick={async () => {
+          await navigator.clipboard.writeText(
+            `http://localhost:5173/join/${game}`,
+          );
+        }}
+      >
+        Copy URL
+      </a>
     </form>
   );
 }

@@ -2,8 +2,9 @@ import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { GameGuess, getGameGuesses, getGuesses, Letter } from "../../api/Guess";
+import { getGuesses, Letter } from "../../api/Guess";
 import { Guess } from "../../components/Guess";
+import Leaderboard from "../../components/Leaderboard";
 
 function GameVictoryPage() {
   const { game } = useParams();
@@ -14,7 +15,6 @@ function GameVictoryPage() {
 
   const navigateTo = useNavigate();
   const [playerGuesses, setPlayerGuesses] = useState<Letter[][]>([]);
-  const [gameGuesses, setGameGuesses] = useState<GameGuess[]>([]);
 
   useEffect(() => {
     if (!game) {
@@ -31,32 +31,14 @@ function GameVictoryPage() {
       const response = await getGuesses(existingPlayer!);
       setPlayerGuesses(response.guesses.map((guess) => guess.letters));
     }
-
-    async function fetchGameGuesses() {
-      const response = await getGameGuesses(game!);
-      setGameGuesses(response.guesses);
-    }
-
     fetchPlayerGuesses();
-    fetchGameGuesses();
   }, [existingPlayer]);
-
-  const victoryEmoji = (num: number): string => {
-    switch (num) {
-      case 0:
-        return "🥇";
-      case 1:
-        return "🥈";
-      case 2:
-        return "🥉";
-      default:
-        return "🏁";
-    }
-  };
 
   // this shouldn't happen but typescript thinks they can be null
   return (
     <MainLayout pageTitle={"🎉 ADIEU 🎉"}>
+      <p className="callout"></p>
+
       <div>
         <div className="guesses">
           {playerGuesses.map((guess, i) => (
@@ -64,29 +46,11 @@ function GameVictoryPage() {
           ))}
         </div>
 
-        <div className="leaderboard">
-          <table>
-            <thead>
-              <th></th>
-              <th>Username</th>
-              <th>Guesses</th>
-            </thead>
-            <tbody>
-              {gameGuesses.map((guess, position) => {
-                const isYou = guess.player == existingPlayer;
-                return (
-                  <tr>
-                    <td className={isYou ? "you" : ""}>
-                      {guess.has_won && victoryEmoji(position)}
-                    </td>
-                    <td className={isYou ? "you" : ""}>{guess.username}</td>
-                    <td className={isYou ? "you" : ""}>{guess.guesses}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <Leaderboard
+          game={game!}
+          currentPlayer={existingPlayer!}
+          refreshTrigger={0}
+        />
       </div>
     </MainLayout>
   );

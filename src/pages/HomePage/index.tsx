@@ -7,6 +7,10 @@ function HomePage() {
   const navigateTo = useNavigate();
   return (
     <MainLayout>
+      <p className="callout">
+        Welcome to <em>ADIEU</em>. Create a new game, and share the link with
+        your friends (or enemies). Use a random word, or choose one of your own.
+      </p>
       <CreateGameForm
         onSubmit={async (formData) => {
           switch (formData.kind) {
