@@ -1,3 +1,5 @@
+import { apiUrl } from "./utils";
+
 export enum GameKind {
   Random = "Random",
   Custom = "Custom",
@@ -14,7 +16,7 @@ export type CreateGameResponse = { game: string };
 export async function createGame(
   params: CreateGameParams,
 ): Promise<CreateGameResponse> {
-  const request = new Request("http://localhost:3000/game/create", {
+  const request = new Request(`${apiUrl}/game/create`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
@@ -33,7 +35,7 @@ export async function joinGame(
   game: string,
   params: JoinGameParams,
 ): Promise<JoinGameResponse> {
-  const request = new Request(`http://localhost:3000/game/${game}/join`, {
+  const request = new Request(`${apiUrl}/game/${game}/join`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
