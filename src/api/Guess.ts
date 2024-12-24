@@ -1,3 +1,5 @@
+import { apiUrl } from "./utils";
+
 // Request Types
 export type CreateGuessParams = { guess: string };
 
@@ -16,7 +18,7 @@ export async function createGuess(
   player: string,
   params: CreateGuessParams,
 ): Promise<CreateGuessResponse> {
-  const request = new Request(`http://localhost:3000/player/${player}/guess`, {
+  const request = new Request(`${apiUrl}/player/${player}/guess`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
@@ -28,12 +30,9 @@ export async function createGuess(
 export type GetGuessesReponses = { guesses: PlayerGuess[] };
 
 export async function getGuesses(player: string): Promise<GetGuessesReponses> {
-  const request = new Request(
-    `http://localhost:3000/player/${player}/guesses`,
-    {
-      method: "GET",
-    },
-  );
+  const request = new Request(`${apiUrl}/player/${player}/guesses`, {
+    method: "GET",
+  });
   const response = await fetch(request);
   return response.json();
 }
@@ -52,7 +51,7 @@ export type GetGameGuessesResponse = {
 export async function getGameGuesses(
   game: string,
 ): Promise<GetGameGuessesResponse> {
-  const request = new Request(`http://localhost:3000/game/${game}/guesses`, {
+  const request = new Request(`${apiUrl}/game/${game}/guesses`, {
     method: "GET",
   });
   const response = await fetch(request);
