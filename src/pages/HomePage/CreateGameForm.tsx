@@ -50,6 +50,7 @@ function Form({ onSubmit }: FormProps) {
             disabled={!isCustomGame}
             value={formData.word}
             onChange={handleInputChange}
+            maxLength={6}
           />
         </label>
       )}

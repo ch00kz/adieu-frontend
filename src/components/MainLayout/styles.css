@@ -11,7 +11,7 @@ body {
 
 .button {
     text-transform: uppercase;
-    font-size: 19px;
+    font-size: 16px;
     font-family: "IBM Plex Sans";
     letter-spacing: 1px;
     font-weight: 500;
@@ -44,7 +44,6 @@ body {
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
-    font-display: optional;
 }
 
 .page-hero {
@@ -56,17 +55,13 @@ body {
     letter-spacing: 10px;
 }
 
-form {
-    width: 400px;
-}
-
 form.input,
 form.select {
     border-radius: 0px;
 }
 
 .copyUrl {
-    width: 400px;
+    width: 100%;
 }
 
 .guesses {
@@ -81,7 +76,6 @@ form.select {
     gap: 20px;
     align-items: center;
     justify-content: center;
-    font-size: 64px;
     text-transform: uppercase;
     font-family: "IBM Plex Sans";
 }
@@ -89,6 +83,7 @@ form.select {
 .letter {
     height: 90px;
     width: 90px;
+    font-size: 64px;
     border: 1px solid transparent;
     border-radius: 2px;
     color: white;
@@ -130,4 +125,52 @@ form.select {
 .you {
     background-color: #e7e7e7;
     font-weight: 900;
+}
+
+@media screen and (max-width: 720px) {
+    .page-hero {
+        font-size: 42px;
+    }
+
+    .letter {
+        height: 70px;
+        width: 70px;
+        font-size: 42px;
+    }
+
+    .letters {
+        gap: 10px;
+    }
+
+    .guesses {
+        gap: 10px;
+    }
+
+    .leaderboard {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .page-hero {
+        font-size: 28px;
+    }
+
+    .letter {
+        height: 60px;
+        width: 60px;
+        font-size: 42px;
+    }
+
+    .letters {
+        gap: 5px;
+    }
+
+    .guesses {
+        gap: 5px;
+    }
+
+    .leaderboard {
+        font-size: 16px;
+    }
 }

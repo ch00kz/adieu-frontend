@@ -41,7 +41,7 @@ function GameVictoryPage() {
     fetchGameGuesses();
   }, [existingPlayer]);
 
-  const positionEmoji = (num: number): string => {
+  const victoryEmoji = (num: number): string => {
     switch (num) {
       case 0:
         return "🥇";
@@ -50,7 +50,7 @@ function GameVictoryPage() {
       case 2:
         return "🥉";
       default:
-        return "";
+        return "🏁";
     }
   };
 
@@ -68,27 +68,19 @@ function GameVictoryPage() {
           <table>
             <thead>
               <th></th>
-              <th></th>
               <th>Username</th>
               <th>Guesses</th>
-              <th>Victory</th>
-              <th></th>
             </thead>
             <tbody>
               {gameGuesses.map((guess, position) => {
                 const isYou = guess.player == existingPlayer;
                 return (
                   <tr>
-                    <td className={isYou ? "you" : ""}>{isYou ? "👉" : ""}</td>
                     <td className={isYou ? "you" : ""}>
-                      {guess.has_won && positionEmoji(position)}
+                      {guess.has_won && victoryEmoji(position)}
                     </td>
                     <td className={isYou ? "you" : ""}>{guess.username}</td>
                     <td className={isYou ? "you" : ""}>{guess.guesses}</td>
-                    <td className={isYou ? "you" : ""}>
-                      {guess.has_won ? "🏆" : ""}
-                    </td>
-                    <td className={isYou ? "you" : ""}>{isYou ? "👈" : ""}</td>
                   </tr>
                 );
               })}
