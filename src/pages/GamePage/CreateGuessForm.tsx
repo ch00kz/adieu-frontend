@@ -49,6 +49,7 @@ function Form({ onSubmit, onChange, inputRef, wordLength }: FormProps) {
           value={formData.guess}
           onChange={handleInputChange}
           maxLength={wordLength}
+          autoComplete="off"
           autoFocus
         />
       </label>
