@@ -36,7 +36,7 @@ function GameVictoryPage() {
 
   // this shouldn't happen but typescript thinks they can be null
   return (
-    <MainLayout pageTitle={"🎉 ADIEU 🎉"}>
+    <MainLayout victory>
       <p className="callout"></p>
 
       <div>

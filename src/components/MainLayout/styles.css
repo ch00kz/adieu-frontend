@@ -1,3 +1,9 @@
+.sacramento-regular {
+    font-family: "Sacramento", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 body {
     height: 100vh;
     font-family: "IBM Plex Serif";
@@ -47,12 +53,24 @@ body {
 }
 
 .page-hero {
-    margin: 50px;
     font-weight: 500;
-    font-size: 50px;
-    font-family: "IBM Plex Serif";
-    font-display: block;
+    font-size: 90px;
     letter-spacing: 10px;
+    font-family: "Sacramento", serif;
+    font-weight: 400;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 50px;
+}
+
+.emoji {
+    font-size: 50px;
+    margin-bottom: 20px;
 }
 
 form.input,
@@ -180,8 +198,11 @@ form {
 
 @media screen and (max-width: 720px) {
     .page-hero {
-        font-size: 42px;
+        font-size: 55px;
     }
+
+    .emoji {
+        font-size: 30px;
 
     .letter {
         height: 70px;
@@ -212,10 +233,6 @@ form {
 }
 
 @media screen and (max-width: 500px) {
-    .page-hero {
-        font-size: 28px;
-    }
-
     .letter {
         height: 60px;
         width: 60px;
