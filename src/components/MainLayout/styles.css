@@ -65,12 +65,12 @@ header {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 50px;
+    padding-top: 30px;
 }
 
 .emoji {
     font-size: 50px;
-    margin-bottom: 20px;
+    margin-top: -30px;
 }
 
 form.input,
@@ -199,10 +199,12 @@ form {
 @media screen and (max-width: 720px) {
     .page-hero {
         font-size: 55px;
+        padding-top: 30px;
     }
 
     .emoji {
         font-size: 30px;
+        margin-top: 0px;
     }
 
     .letter {
