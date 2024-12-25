@@ -40,16 +40,18 @@ export default function Leaderboard({
     <div className="leaderboard">
       <table>
         <thead>
-          <th></th>
-          <th>Username</th>
-          <th>Guesses</th>
+          <tr>
+            <th></th>
+            <th>Username</th>
+            <th>Guesses</th>
+          </tr>
         </thead>
         <tbody>
           {gameGuesses.length ? (
             gameGuesses.map((guess, position) => {
               const isYou = guess.player == currentPlayer;
               return (
-                <tr>
+                <tr key={guess.player}>
                   <td className={isYou ? "you" : ""}>
                     {guess.has_won && victoryEmoji(position)}
                   </td>

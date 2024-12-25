@@ -1,11 +1,11 @@
 import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
-import CreateGuessForm from "./CreateGuessForm";
 import { createGuess, getGuesses, Letter, Status } from "../../api/Guess";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Guess, LetterBlock } from "../../components/Guess";
 import Leaderboard from "../../components/Leaderboard";
+import { Keyboard } from "../../components/Keyboard";
 
 function GamePage() {
   const { game } = useParams();
@@ -18,8 +18,13 @@ function GamePage() {
   const [hasWon, setHasWon] = useState<boolean>(false);
   const [guesses, setGuesses] = useState<Letter[][]>([]);
   const [currentGuess, setCurrentGuess] = useState<Letter[]>([]);
+
+  const safeSetCurrentGuess = (g: Letter[]) => {
+    if (g.length <= wordLength!) {
+      setCurrentGuess(g);
+    }
+  };
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
-  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!game) {
@@ -62,12 +67,11 @@ function GamePage() {
 
   return (
     <MainLayout>
-      <p className="callout">
-        Try to guess the word. Hit ENTER or RETURN or submit your guess.
-      </p>
-
-      <div onClick={() => inputRef.current?.focus()}>
+      <div>
         <div className="guesses">
+          {guesses.map((guess, i) => (
+            <Guess key={i} guess={guess} />
+          ))}
           <div className="letters">
             {currentGuess.map((letter, i) => (
               <LetterBlock key={i} letter={letter} />
@@ -76,36 +80,32 @@ function GamePage() {
               <LetterBlock key={i} letter={letter} />
             ))}
           </div>
-          {guesses.map((guess, i) => (
-            <Guess key={i} guess={guess} />
-          ))}
         </div>
+
+        <Keyboard
+          allGuesses={guesses}
+          guess={currentGuess}
+          setGuess={safeSetCurrentGuess}
+          submitGuess={async () => {
+            const newGuess = currentGuess.map(({ letter }) => letter).join("");
+            if (newGuess.length != wordLength) {
+              return;
+            }
+
+            const { guess } = await createGuess(existingPlayer!, {
+              guess: currentGuess.map(({ letter }) => letter).join(""),
+            });
+            setGuesses([...guesses, guess.letters]);
+            setHasWon(guess.is_winning_guess);
+            setRefreshTrigger(refreshTrigger + 1);
+            setCurrentGuess([]);
+          }}
+        />
 
         <Leaderboard
           game={game!}
           currentPlayer={existingPlayer!}
           refreshTrigger={refreshTrigger}
-        />
-
-        <CreateGuessForm
-          inputRef={inputRef}
-          wordLength={wordLength}
-          onSubmit={async (formData) => {
-            const { guess } = await createGuess(existingPlayer!, {
-              guess: formData.guess,
-            });
-            setGuesses([guess.letters, ...guesses]);
-            setHasWon(guess.is_winning_guess);
-            setRefreshTrigger(refreshTrigger + 1);
-          }}
-          onChange={(formData) => {
-            setCurrentGuess(
-              formData.guess.split("").map((letter: string) => ({
-                letter,
-                status: Status.Unsubmitted,
-              })),
-            );
-          }}
         />
       </div>
     </MainLayout>
