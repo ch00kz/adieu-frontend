@@ -110,7 +110,13 @@ export function Keyboard({
         ))}
       </div>
       <div className="keyboardRow">
-        <Key key={"Enter"} letter={"Enter"} onClick={submitGuess} wideKey />
+        <Key
+          key={"↲"}
+          letter={"↲"}
+          onClick={submitGuess}
+          className="enterKey"
+          wideKey
+        />
         {bottomRow.map((letter) => (
           <Key
             className={getClassName(letter)}
@@ -119,7 +125,13 @@ export function Keyboard({
             onClick={() => pressKey(letter)}
           />
         ))}
-        <Key key={"Del"} letter={"Del"} onClick={() => backSpace()} wideKey />
+        <Key
+          key={"⌫"}
+          letter={"⌫"}
+          onClick={() => backSpace()}
+          className="deleteKey "
+          wideKey
+        />
       </div>
     </div>
   );

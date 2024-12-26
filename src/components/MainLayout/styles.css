@@ -180,7 +180,9 @@ form {
 
 .key {
     height: 60px;
-    width: 43px;
+    width: 55px;
+    padding: 0;
+    margin: 0;
     background-color: #d4d4d4;
     font-family: "IBM Plex Sans";
     display: flex;
@@ -192,8 +194,15 @@ form {
 }
 
 .wideKey {
-    width: 69px;
-    font-size: 12px;
+    width: 85px;
+}
+
+.enterKey {
+    color: #60b320;
+}
+
+.deleteKey {
+    color: #cb0707;
 }
 
 @media screen and (max-width: 720px) {
@@ -208,7 +217,6 @@ form {
     }
 
     .letter {
-        height: 70px;
         width: 70px;
         font-size: 42px;
     }
@@ -227,7 +235,7 @@ form {
 
     .key {
         height: 60px;
-        width: 30px;
+        width: 38px;
     }
 
     .wideKey {
@@ -237,13 +245,24 @@ form {
 
 @media screen and (max-width: 500px) {
     .letter {
-        height: 60px;
-        width: 60px;
+        height: 52px;
+        width: 52px;
         font-size: 42px;
     }
 
     .letters {
         gap: 5px;
+    }
+
+    .key {
+        width: 29px;
+        font-size: 25px;
+        padding: 0;
+        border: none;
+    }
+
+    .wideKey {
+        width: 45px;
     }
 
     .guesses {
@@ -255,6 +274,6 @@ form {
     }
 
     .keyboardRow {
-        gap: 7px;
+        gap: 6px;
     }
 }
