@@ -42,8 +42,8 @@ export default function Leaderboard({
         <thead>
           <tr>
             <th></th>
-            <th>Username</th>
-            <th>Guesses</th>
+            <th>Player</th>
+            <th style={{ textAlign: "center" }}>Guesses</th>
           </tr>
         </thead>
         <tbody>
@@ -55,15 +55,23 @@ export default function Leaderboard({
                   <td className={isYou ? "you" : ""}>
                     {guess.has_won && victoryEmoji(position)}
                   </td>
-                  <td className={isYou ? "you" : ""}>{guess.username}</td>
-                  <td className={isYou ? "you" : ""}>{guess.guesses}</td>
+                  <td className={isYou ? "you" : ""}>
+                    {guess.username}
+                    {isYou && <span> (you)</span>}
+                  </td>
+                  <td
+                    style={{ textAlign: "center" }}
+                    className={isYou ? "you" : ""}
+                  >
+                    {guess.guesses}
+                  </td>
                 </tr>
               );
             })
           ) : (
             <tr>
               <td></td>
-              <td>You're the first to guess!</td>
+              <td>No one has made a guess!</td>
               <td></td>
             </tr>
           )}

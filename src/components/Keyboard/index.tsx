@@ -99,7 +99,7 @@ export function Keyboard({
           />
         ))}
       </div>
-      <div className="keyboardRow">
+      <div className="keyboardRow middleRow">
         {middleRow.map((letter) => (
           <Key
             className={getClassName(letter)}

@@ -67,47 +67,45 @@ function GamePage() {
 
   return (
     <MainLayout>
-      <div>
-        <div className="guesses">
-          {guesses.map((guess, i) => (
-            <Guess key={i} guess={guess} />
+      <div className="guesses">
+        {guesses.map((guess, i) => (
+          <Guess key={i} guess={guess} />
+        ))}
+        <div className="letters">
+          {currentGuess.map((letter, i) => (
+            <LetterBlock key={i} letter={letter} />
           ))}
-          <div className="letters">
-            {currentGuess.map((letter, i) => (
-              <LetterBlock key={i} letter={letter} />
-            ))}
-            {blankGuesses.map((letter, i) => (
-              <LetterBlock key={i} letter={letter} />
-            ))}
-          </div>
+          {blankGuesses.map((letter, i) => (
+            <LetterBlock key={i} letter={letter} />
+          ))}
         </div>
-
-        <Keyboard
-          allGuesses={guesses}
-          guess={currentGuess}
-          setGuess={safeSetCurrentGuess}
-          submitGuess={async () => {
-            const newGuess = currentGuess.map(({ letter }) => letter).join("");
-            if (newGuess.length != wordLength) {
-              return;
-            }
-
-            const { guess } = await createGuess(existingPlayer!, {
-              guess: currentGuess.map(({ letter }) => letter).join(""),
-            });
-            setGuesses([...guesses, guess.letters]);
-            setHasWon(guess.is_winning_guess);
-            setRefreshTrigger(refreshTrigger + 1);
-            setCurrentGuess([]);
-          }}
-        />
-
-        <Leaderboard
-          game={game!}
-          currentPlayer={existingPlayer!}
-          refreshTrigger={refreshTrigger}
-        />
       </div>
+
+      <Keyboard
+        allGuesses={guesses}
+        guess={currentGuess}
+        setGuess={safeSetCurrentGuess}
+        submitGuess={async () => {
+          const newGuess = currentGuess.map(({ letter }) => letter).join("");
+          if (newGuess.length != wordLength) {
+            return;
+          }
+
+          const { guess } = await createGuess(existingPlayer!, {
+            guess: currentGuess.map(({ letter }) => letter).join(""),
+          });
+          setGuesses([...guesses, guess.letters]);
+          setHasWon(guess.is_winning_guess);
+          setRefreshTrigger(refreshTrigger + 1);
+          setCurrentGuess([]);
+        }}
+      />
+
+      <Leaderboard
+        game={game!}
+        currentPlayer={existingPlayer!}
+        refreshTrigger={refreshTrigger}
+      />
     </MainLayout>
   );
 }
