@@ -1,32 +1,32 @@
 import React from "react";
-import { GameKind } from "../../api/Game";
+import { Game } from "../../generated/types";
 
 interface FormProps {
   onSubmit: (data: FormData) => void;
 }
 
 interface FormData {
-  kind: GameKind;
-  word: string;
+  game: Game;
 }
 
 function Form({ onSubmit }: FormProps) {
   const [formData, setFormData] = React.useState<FormData>({
-    kind: GameKind.Random,
-    word: "",
+    game: { type: "Random" },
   });
 
-  const isCustomGame = formData.kind === GameKind.Custom;
+  const isCustomGame = formData.game.type === "Custom";
 
   function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ game: { ...formData.game, [name]: value } });
   }
 
   function handleKindChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    const { value } = event.target;
-    const kind = value as GameKind;
-    setFormData({ kind, word: kind === GameKind.Random ? "" : formData.word });
+    const value = event.target.value as Game["type"];
+
+    const randomGame = { type: "Random", word: undefined } as Game;
+    const customGame = { type: "Custom", word: formData.game.word } as Game;
+    setFormData({ game: value === "Random" ? randomGame : customGame });
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -36,9 +36,13 @@ function Form({ onSubmit }: FormProps) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <select name="kind" value={formData.kind} onChange={handleKindChange}>
-        <option value={GameKind.Random}>Random</option>
-        <option value={GameKind.Custom}>Custom</option>
+      <select
+        name="type"
+        value={formData.game.type}
+        onChange={handleKindChange}
+      >
+        <option value="Random">Random</option>
+        <option value="Custom">Custom</option>
       </select>
       <br />
       {isCustomGame && (
@@ -48,7 +52,7 @@ function Form({ onSubmit }: FormProps) {
             type="text"
             name="word"
             disabled={!isCustomGame}
-            value={formData.word}
+            value={formData.game.word}
             onChange={handleInputChange}
             maxLength={6}
           />
@@ -58,7 +62,7 @@ function Form({ onSubmit }: FormProps) {
       <button
         className="button"
         type="submit"
-      >{`Create Game with ${formData.kind} Word`}</button>
+      >{`Create Game with ${formData.game.type} Word`}</button>
     </form>
   );
 }

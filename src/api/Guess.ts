@@ -1,24 +1,16 @@
+import {
+  CreatePlayerGuessParams,
+  CreatePlayerGuessResponse,
+  GetGameScoresResponse,
+  GetPlayerGuessesResponse,
+} from "../generated/types";
 import { apiUrl } from "./utils";
 
-// Request Types
-export type CreateGuessParams = { guess: string };
-
-// Response Types
-export enum Status {
-  Correct = "Correct",
-  InTheWord = "InTheWord",
-  Wrong = "Wrong",
-  Unsubmitted = "Unsubmitted",
-}
-export type Letter = { letter: string; status: Status };
-export type PlayerGuess = { letters: Letter[]; is_winning_guess: boolean };
-export type CreateGuessResponse = { guess: PlayerGuess };
-
-export async function createGuess(
-  player: string,
-  params: CreateGuessParams,
-): Promise<CreateGuessResponse> {
-  const request = new Request(`${apiUrl}/player/${player}/guess`, {
+export async function createPlayerGuess(
+  playerId: string,
+  params: CreatePlayerGuessParams,
+): Promise<CreatePlayerGuessResponse> {
+  const request = new Request(`${apiUrl}/player/${playerId}/guess`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
@@ -27,31 +19,20 @@ export async function createGuess(
   return response.json();
 }
 
-export type GetGuessesReponses = { guesses: PlayerGuess[] };
-
-export async function getGuesses(player: string): Promise<GetGuessesReponses> {
-  const request = new Request(`${apiUrl}/player/${player}/guesses`, {
+export async function getPlayerGuesses(
+  playerId: string,
+): Promise<GetPlayerGuessesResponse> {
+  const request = new Request(`${apiUrl}/player/${playerId}/guess`, {
     method: "GET",
   });
   const response = await fetch(request);
   return response.json();
 }
 
-export type GameGuess = {
-  player: string;
-  username: string;
-  guesses: number;
-  has_won: boolean;
-};
-
-export type GetGameGuessesResponse = {
-  guesses: GameGuess[];
-};
-
-export async function getGameGuesses(
-  game: string,
-): Promise<GetGameGuessesResponse> {
-  const request = new Request(`${apiUrl}/game/${game}/guesses`, {
+export async function getGameScores(
+  gameId: string,
+): Promise<GetGameScoresResponse> {
+  const request = new Request(`${apiUrl}/game/${gameId}/scores`, {
     method: "GET",
   });
   const response = await fetch(request);

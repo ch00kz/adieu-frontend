@@ -1,5 +1,6 @@
 // import { useEffect } from "react";
-import { Letter, Status } from "../../api/Guess";
+
+import { Letter } from "../../generated/types";
 
 const topRow = ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"];
 const middleRow = ["a", "s", "d", "f", "g", "h", "j", "k", "l"];
@@ -36,52 +37,26 @@ export function Keyboard({
   submitGuess,
   allGuesses,
 }: KeyboardProps) {
-  const status = Status.Unsubmitted;
-
   const allLetters = allGuesses.flat();
   // const allKeys = [...topRow, ...middleRow, ...bottomRow];
   const backSpace = () => setGuess(guess.slice(0, -1));
-  const pressKey = (letter: string) => setGuess([...guess, { letter, status }]);
+  const pressKey = (letter: string) =>
+    setGuess([...guess, { status: "Unsubmitted", letter }]);
 
-  // useEffect(() => {
-  //   const handleKeyPress = (event: KeyboardEvent) => {
-  //     event.preventDefault();
-  //     console.log(event);
-  //     const key = event.key;
-  //     if (allKeys.includes(key.toLowerCase())) {
-  //       pressKey(key);
-  //     } else if (key === "Backspace") {
-  //       event.preventDefault();
-  //       backSpace();
-  //     } else if (key === "Enter") {
-  //       event.preventDefault();
-  //       submitGuess();
-  //     }
-  //   };
-
-  //   // Add event listener to the window
-  //   window.addEventListener("keydown", handleKeyPress);
-
-  //   // Cleanup the event listener on component unmount
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyPress);
-  //   };
-  // }, [guess]);
-
-  function letterIs(key: string, targetStatus: Status) {
+  function letterIs(key: string, targetStatus: Letter["status"]) {
     return allLetters
       .filter(({ letter }) => letter === key)
       .some(({ status }) => status === targetStatus);
   }
 
   function getClassName(letter: string): string {
-    if (letterIs(letter, Status.Correct)) {
+    if (letterIs(letter, "Correct")) {
       return "correct";
     }
-    if (letterIs(letter, Status.InTheWord)) {
+    if (letterIs(letter, "InTheWord")) {
       return "intheword";
     }
-    if (letterIs(letter, Status.Wrong)) {
+    if (letterIs(letter, "Wrong")) {
       return "wrong";
     }
     return "unsubmitted";

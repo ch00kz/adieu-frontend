@@ -2,7 +2,7 @@ import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { getGuesses, Letter } from "../../api/Guess";
+import { getPlayerGuesses, Letter } from "../../api/Guess";
 import { Guess } from "../../components/Guess";
 import Leaderboard from "../../components/Leaderboard";
 
@@ -28,7 +28,7 @@ function GameVictoryPage() {
 
   useEffect(() => {
     async function fetchPlayerGuesses() {
-      const response = await getGuesses(existingPlayer!);
+      const response = await getPlayerGuesses(existingPlayer!);
       setPlayerGuesses(response.guesses.map((guess) => guess.letters));
     }
     fetchPlayerGuesses();

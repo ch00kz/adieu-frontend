@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { GameGuess, getGameGuesses } from "../../api/Guess";
+import { getGameScores } from "../../api/Guess";
+import { PlayerScore } from "../../generated/types";
 
 type Props = {
   game: string;
@@ -25,15 +26,15 @@ export default function Leaderboard({
   currentPlayer,
   refreshTrigger,
 }: Props) {
-  const [gameGuesses, setGameGuesses] = useState<GameGuess[]>([]);
+  const [playerScores, setPlayerScores] = useState<PlayerScore[]>([]);
 
   useEffect(() => {
-    async function fetchGameGuesses() {
-      const response = await getGameGuesses(game!);
-      setGameGuesses(response.guesses);
+    async function fetchGameScores() {
+      const response = await getGameScores(game!);
+      setPlayerScores(response.playerScores);
     }
 
-    fetchGameGuesses();
+    fetchGameScores();
   }, [refreshTrigger, game]);
 
   return (
@@ -47,13 +48,13 @@ export default function Leaderboard({
           </tr>
         </thead>
         <tbody>
-          {gameGuesses.length ? (
-            gameGuesses.map((guess, position) => {
+          {playerScores.length ? (
+            playerScores.map((guess, position) => {
               const isYou = guess.player == currentPlayer;
               return (
                 <tr key={guess.player}>
                   <td className={isYou ? "you" : ""}>
-                    {guess.has_won && victoryEmoji(position)}
+                    {guess.hasWon && victoryEmoji(position)}
                   </td>
                   <td className={isYou ? "you" : ""}>
                     {guess.username}

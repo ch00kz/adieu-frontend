@@ -1,11 +1,12 @@
 import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
-import { createGuess, getGuesses, Letter, Status } from "../../api/Guess";
+import { createPlayerGuess, getPlayerGuesses } from "../../api/Guess";
 import { useEffect, useState } from "react";
 import { Guess, LetterBlock } from "../../components/Guess";
 import Leaderboard from "../../components/Leaderboard";
 import { Keyboard } from "../../components/Keyboard";
+import { Letter } from "../../generated/types";
 
 function GamePage() {
   const { game } = useParams();
@@ -38,8 +39,8 @@ function GamePage() {
 
   useEffect(() => {
     async function fetchPlayerGuesses() {
-      const response = await getGuesses(existingPlayer!);
-      if (response.guesses.some((guess) => guess.is_winning_guess)) {
+      const response = await getPlayerGuesses(existingPlayer!);
+      if (response.guesses.some((guess) => guess.isWinningGuess)) {
         navigateTo(`/victory/${game}`);
       } else {
         setGuesses(response.guesses.map((guess) => guess.letters));
@@ -63,7 +64,7 @@ function GamePage() {
 
   const blankGuesses: Letter[] = Array.from(
     Array(numMissingLetters).keys(),
-  ).map(() => ({ letter: " ", status: Status.Unsubmitted }));
+  ).map(() => ({ letter: " ", status: "Unsubmitted" }));
 
   return (
     <MainLayout>
@@ -91,11 +92,11 @@ function GamePage() {
             return;
           }
 
-          const { guess } = await createGuess(existingPlayer!, {
+          const { guess } = await createPlayerGuess(existingPlayer!, {
             guess: currentGuess.map(({ letter }) => letter).join(""),
           });
           setGuesses([...guesses, guess.letters]);
-          setHasWon(guess.is_winning_guess);
+          setHasWon(guess.isWinningGuess);
           setRefreshTrigger(refreshTrigger + 1);
           setCurrentGuess([]);
         }}
