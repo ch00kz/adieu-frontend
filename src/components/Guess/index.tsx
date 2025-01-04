@@ -1,4 +1,4 @@
-import { Letter } from "../../api/Guess";
+import { Letter } from "../../generated/types";
 
 export const LetterBlock = ({ letter }: { letter: Letter }) => (
   <div className={`letter ${letter.status.toLowerCase()}`}>{letter.letter}</div>

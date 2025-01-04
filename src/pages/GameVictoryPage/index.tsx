@@ -2,9 +2,10 @@ import { useParams } from "react-router";
 import MainLayout from "../../components/MainLayout";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { getPlayerGuesses, Letter } from "../../api/Guess";
+import { getPlayerGuesses } from "../../api/Guess";
 import { Guess } from "../../components/Guess";
 import Leaderboard from "../../components/Leaderboard";
+import { Letter } from "../../generated/types";
 
 function GameVictoryPage() {
   const { game } = useParams();
