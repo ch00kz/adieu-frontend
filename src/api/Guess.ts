@@ -9,14 +9,19 @@ import { apiUrl } from "./utils";
 export async function createPlayerGuess(
   playerId: string,
   params: CreatePlayerGuessParams,
-): Promise<CreatePlayerGuessResponse> {
+): Promise<CreatePlayerGuessResponse | string> {
   const request = new Request(`${apiUrl}/player/${playerId}/guess`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(params),
   });
   const response = await fetch(request);
-  return response.json();
+  if (response.ok) {
+    return response.json();
+  } else {
+    const { error }: { error: string } = await response.json();
+    return Promise.resolve(error);
+  }
 }
 
 export async function getPlayerGuesses(

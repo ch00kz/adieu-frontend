@@ -7,6 +7,7 @@ import { Guess, LetterBlock } from "../../components/Guess";
 import Leaderboard from "../../components/Leaderboard";
 import { Keyboard } from "../../components/Keyboard";
 import { Letter } from "../../generated/types";
+import toast from "react-hot-toast";
 
 function GamePage() {
   const { game } = useParams();
@@ -92,13 +93,19 @@ function GamePage() {
             return;
           }
 
-          const { guess } = await createPlayerGuess(existingPlayer!, {
+          const response = await createPlayerGuess(existingPlayer!, {
             guess: currentGuess.map(({ letter }) => letter).join(""),
           });
-          setGuesses([...guesses, guess.letters]);
-          setHasWon(guess.isWinningGuess);
-          setRefreshTrigger(refreshTrigger + 1);
-          setCurrentGuess([]);
+
+          if (typeof response === "string") {
+            toast.error(response);
+          } else {
+            const { guess } = response;
+            setGuesses([...guesses, guess.letters]);
+            setHasWon(guess.isWinningGuess);
+            setRefreshTrigger(refreshTrigger + 1);
+            setCurrentGuess([]);
+          }
         }}
       />
 
