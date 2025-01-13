@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import CreateGameForm from "./CreateGameForm";
 import { createGame } from "../../api/Game";
 import MainLayout from "../../components/MainLayout";
+import toast from "react-hot-toast";
 
 function HomePage() {
   const navigateTo = useNavigate();
@@ -13,8 +14,13 @@ function HomePage() {
       </p>
       <CreateGameForm
         onSubmit={async (formData) => {
-          const { gameId } = await createGame({ game: formData.game });
-          return navigateTo(`/join/${gameId}`);
+          const response = await createGame({ game: formData.game });
+          if (typeof response === "string") {
+            toast.error(response);
+          } else {
+            const { gameId } = response;
+            return navigateTo(`/join/${gameId}`);
+          }
         }}
       />
     </MainLayout>
